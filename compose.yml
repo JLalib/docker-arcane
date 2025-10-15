@@ -1,0 +1,22 @@
+# Arcane Docker Compose Configuration
+services:
+  arcane:
+    image: ghcr.io/ofkm/arcane:latest
+    container_name: arcane
+    restart: unless-stopped
+    ports:
+      - 3552:3552
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - arcane-data:/app/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=http://localhost:3552
+      - ENCRYPTION_KEY=e2a1a9e2e7e957a436924369d301449313b598db3344054433f6221268aed7d4
+      - JWT_SECRET=1cee3924b4a9c4ba8bfb3b78e1c1f2d839b8616a1b8725c08c6e51acc8d95888
+      - DATABASE_URL=file:data/arcane.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+
+volumes:
+  arcane-data:
+    driver: local
